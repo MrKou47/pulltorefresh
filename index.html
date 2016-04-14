@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>pullToRefresh</title>
+    <script src="lib/iscroll-probe.js"></script>
+    <script src="lib/jquery.js"></script>
+    <!-- <script src="js/pullToRefresh.js"></script> -->
+</head>
+<body>
+    <div class="wrapper">
+    <div class="list">
+        <div class="head">
+            <img src="img/arrow.png" width="40" height="40"/>
+            <span>下拉刷新...</span>
+        </div>
+        <div class="item">Row 1</div>
+        <div class="item">Row 2</div>
+        <div class="item">Row 3</div>
+        <div class="item">Row 4</div>
+        <div class="item">Row 5</div>
+        <div class="item">Row 6</div>
+        <div class="item">Row 7</div>
+        <div class="item">Row 8</div>
+        <div class="item">Row 9</div>
+        <div class="item">Row 10</div>
+        <div class="item">Row 11</div>
+        <div class="item">Row 12</div>
+        <div class="item">Row 13</div>
+        <div class="item">Row 14</div>
+        <div class="item">Row 15</div>
+        <div class="item">Row 16</div>
+        <div class="foot">
+            <img src="img/arrow.png" width="40" height="40"/>
+            <span>上拉加载更多...</span>
+        </div>
+    </div>
+</div>
+
+</body>
+<script src="js/until.js"></script>
+<script>
+    $(document).ready(function() {
+        $(".wrapper").pulltorefresh({
+            scrollSettings: {
+                mouseWheel: false
+            },
+            pulltoload:function (myscroll) {
+                var self = this;
+                console.log(self)
+                setTimeout(function (myscroll) {
+                    
+                },1000)
+            }
+        });
+    });
+</script>
+<style>
+    html,body{
+        width: 100%;height: 100%;
+    }
+    * {
+        margin: 0;padding: 0;
+    }
+    body {
+        font-size: 40px;
+    }
+    .wrapper{
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        overflow: hidden;
+    }
+    .list {
+        position: relative;
+        display: flex;
+        flex-flow: column;
+    }
+    .item {
+        height: 150px;
+        line-height: 150px;
+        background: #dddddd;
+        font-size: 50px;
+        border:1px solid #ffffff;
+        padding-left: 30px;
+    }
+    .head {
+        text-align: center;
+        height: 100px;
+        line-height: 100px;
+    }
+    .head img {
+        margin-bottom: -7px;
+        display: inline-block;
+        transform: rotate(180deg);
+        -webkit-transform: rotate(180deg);
+        transition: transform 150ms;
+        -webkit-transition: transform 150ms;
+    }
+    .up {
+        transform: rotate(360deg) !important;
+        -webkit-transform: rotate(360deg) !important;
+    }
+    .foot {
+        text-align: center;
+        height: 100px;
+        line-height: 100px;
+    }
+    .foot img {
+        margin-bottom: -7px;
+        display: inline-block;
+        /*transform: rotate(0deg);*/
+        /*-webkit-transform: rotate(0deg);*/
+        transition: transform 150ms;
+        -webkit-transition: transform 150ms;
+    }
+    .down {
+        transform: rotate(180deg) !important;
+        -webkit-transform: rotate(180deg) !important;
+    }
+</style>
+</html>

@@ -12,17 +12,15 @@
     var headImg,
         footImg,
         headImgHasClass,
-        footImgHasClass,
-        bigScroll;
+        footImgHasClass;
     /* 接受zepto对象，生成带有刷新的scroller */
     function PullToRefresh(ele,opt) {
         this.$ele = ele;
-        this.myScroll = null;
         this.defaults = {
             delector: { //选择器
                 container: '.wrapper', //iscroller的盒子
                 headBox: '.head',   //头部更新盒子
-                footBox: 'foot' //上拉刷新盒子
+                footBox: '.foot' //上拉刷新盒子
             },
             scrollSettings: {
                 probeType: 3,
@@ -32,11 +30,11 @@
             arrowUrl: 'img/arrow.png',  //下拉刷新的url
             initScroll: -100,   //初始滚动大小
             maxScrollY: 100,
-            'refresh':function (myScroll) {console.log(bigScroll)},
-            'pulltoload': function (myScroll) {}
+            pulltoload: null,
+            refresh: null
         };
         this.options = $.extend({}, this.defaults, opt);
-        this.myScroll = this._init();
+        this.myScroll = null;
     }
     PullToRefresh.prototype = {
         _init: function () {
@@ -45,8 +43,7 @@
                 footImg = $(this.options.delector.footBox).find('img'),
                 headImgHasClass = headImg.hasClass('up'),
                 footImgHasClass = headImg.hasClass('down'),
-                headerH = this._getHeadHeight(),
-                refresh = this.options.refresh;
+                headerH = this._getHeadHeight();
                 pulltoload = this.options.pulltoload;
                 refresh = this.options.refresh;
             /* 创建 iscroll 对象 */
@@ -78,29 +75,39 @@
                 } else if (self.y >= 0) {
                     headImg.attr('src', 'img/ajax-loader.gif');
                     //TODO ajax下拉刷新数据
-                    refresh();
-                   /* setTimeout(function () {
+                    if (refresh) {
+                        refresh();
+                    };
+                    console.log(headImg);
+                    console.log(headImg.attr('src'));
+                    setTimeout(function () {
+                        self.refresh();
                         headImg.removeClass('up');
                         headImg.attr('src', 'img/arrow.png');
-                        console.log(2)
                         self.scrollTo(0, -headerH);
-                    }, 1000);*/
+                    }, 1000);
                 }
 
                 var maxY = self.maxScrollY - self.y;
-
                 if (maxY > -headerH && maxY < 0) {
                     self.scrollTo(0, self.maxScrollY + headerH);
                     footImg.removeClass('down')
                 } else if (maxY >= 0) {
+                    console.log(footImg);
+                    console.log(footImg.attr('src'));
                     footImg.attr('src', 'img/ajax-loader.gif');
                     //TODO ajax上拉加载数据
-                    pulltoload();
-
-
+                    if (pulltoload) {
+                        pulltoload();
+                    };
+                    setTimeout(function () {
+                        self.refresh();
+                        self.scrollTo(0, self.y + 100);
+                        footImg.removeClass('down');
+                        footImg.attr('src', 'img/arrow.png');
+                    }, 1000);
                 }
             })
-            return this.myScroll;
         },
         // 获得head的高度
         _getHeadHeight:function () {
@@ -108,9 +115,8 @@
         }
     }
     $.fn.pulltorefresh = function (option) {
+        console.log(1)
         var sObj = new PullToRefresh(this,option);
-        var myscroll = sObj.myScroll;
-        // console.log(sObj.myScroll);
         return sObj._init();
     }
 })($);

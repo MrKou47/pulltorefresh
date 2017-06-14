@@ -6,7 +6,7 @@
 
 ```html
   <script src="../iscroll-probe.js"></script>
-  <script src="../jquery.js"</script>
+  <script src="../jquery.js"></script>
   <script src="../pulltofresh.js"></script>
   <script>
     $("#wrapper").pulltofresh();
